@@ -1,4 +1,4 @@
-package com.carloscosta.ssbplusstreaming.producers;
+package com.epilif.ssbplusstreaming.producers;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.*;
