@@ -26,7 +26,7 @@ public class CustomerComplaints extends TimerTask {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         this.producer = new KafkaProducer<>(props);
-        this.topic = topic;
+        this.topic = topic + "asdasd";
         this.interval = interval;
         this.numRecords = numRecords;
     }
