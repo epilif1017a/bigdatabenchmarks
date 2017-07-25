@@ -8,4 +8,4 @@ to include streaming scenarios.
 Currently, you will find two folders in the repository:
 
 1) _SSB Scripts_ - contains two shell scripts with all the 13 SSB queries, using wither a star schema or a flat table.
-2) _ssbplusstreaming_- contains a Java Maven project with a Kafka producer and a Spark kafka consumer, processing the stream, integrating the data with the "part" dimension table of the SSB benchmark, and storing the results in two storage systems: hive and cassandra.
+2) _ssbplusstreaming_- contains a Java Maven project with a Kafka producer and a Spark kafka consumer, processing the stream, integrating the data with the "part" dimension table of the SSB benchmark, and storing the results in two storage systems: Hive and Cassandra.
