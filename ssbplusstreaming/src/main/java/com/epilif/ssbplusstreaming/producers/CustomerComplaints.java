@@ -70,4 +70,3 @@ public class CustomerComplaints extends TimerTask {
         timer.schedule(producer, 0, producer.getInterval());
     }
 }
-
