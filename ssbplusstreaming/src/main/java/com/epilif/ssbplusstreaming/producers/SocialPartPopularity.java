@@ -32,12 +32,6 @@ public class SocialPartPopularity extends TimerTask {
         this.numRecords = numRecords;
     }
 
-    public static void main(String args[]) {
-        SocialPartPopularity producer = new SocialPartPopularity(args[0], args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
-        Timer timer = new Timer();
-        timer.schedule(producer, 0, producer.getIntervalMs());
-    }
-
     public int getIntervalMs() {
         return this.intervalMs;
     }
@@ -73,5 +67,11 @@ public class SocialPartPopularity extends TimerTask {
                 System.out.printf("Successfully send message to %s %n", recordMetadata.topic());
             }
         }
+    }
+
+    public static void main(String args[]) {
+        SocialPartPopularity producer = new SocialPartPopularity(args[0], args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+        Timer timer = new Timer();
+        timer.schedule(producer, 0, producer.getIntervalMs());
     }
 }
