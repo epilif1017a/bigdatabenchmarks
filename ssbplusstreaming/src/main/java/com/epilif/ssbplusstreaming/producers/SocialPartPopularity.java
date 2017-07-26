@@ -3,6 +3,9 @@ package com.epilif.ssbplusstreaming.producers;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Timer;
@@ -42,13 +45,15 @@ public class SocialPartPopularity extends TimerTask {
         Random rand = new Random();
         for (int i = 0; i < this.numRecords; i++) {
             int partkey = rand.nextInt(1800000) + 1;
-            long timestamp = System.currentTimeMillis();
+            int datekey = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+            int timekey = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm")));
             String country = countries[rand.nextInt(5)];
             String gender = genders[rand.nextInt(2)];
             int sentiment = rand.nextInt(6);
             ProducerRecord<String, String> data = new ProducerRecord<>(this.topic,
                     partkey + ";" +
-                            timestamp + ";" +
+                            datekey + ";" +
+                            timekey + ";" +
                             country + ";" +
                             gender + ";" +
                             sentiment

@@ -1,7 +1,8 @@
+-- Flat table & Star Schema version (no joins needed)
 WITH (
   SELECT
     country,
-    AVG(Sentiment) as sent
+    AVG(sentiment) as sent
   FROM social_part_popularity
   GROUP BY country
 ) AS sentByCountry

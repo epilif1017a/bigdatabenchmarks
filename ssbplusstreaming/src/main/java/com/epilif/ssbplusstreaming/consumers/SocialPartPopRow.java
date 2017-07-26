@@ -3,41 +3,62 @@ package com.epilif.ssbplusstreaming.consumers;
 import java.io.Serializable;
 
 public class SocialPartPopRow implements Serializable {
-    private String id;
-    private String product;
-    private boolean redirected;
+
+    private int partkey;
+    private int datekey;
+    private int timekey;
+    private String country;
+    private String gender;
+    private int sentiment;
 
     public SocialPartPopRow() {
     }
 
-    public SocialPartPopRow(String id, String product, boolean redirected) {
-        this.id = id;
-        this.product = product;
-        this.redirected = redirected;
+    public int getPartkey() {
+        return partkey;
     }
 
-    public String getId() {
-        return id;
+    public void setPartkey(int partkey) {
+        this.partkey = partkey;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getDatekey() {
+        return datekey;
     }
 
-    public String getProduct() {
-        return product;
+    public void setDatekey(int datekey) {
+        this.datekey = datekey;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public int getTimekey() {
+        return timekey;
     }
 
-    public boolean isRedirected() {
-        return redirected;
+    public void setTimekey(int timekey) {
+        this.timekey = timekey;
     }
 
-    public void setRedirected(boolean redirected) {
-        this.redirected = redirected;
+    public String getCountry() {
+        return country;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getSentiment() {
+        return sentiment;
+    }
+
+    public void setSentiment(int sentiment) {
+        this.sentiment = sentiment;
+    }
 }
