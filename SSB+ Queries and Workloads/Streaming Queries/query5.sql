@@ -1,3 +1,6 @@
+-- Query 5_
+-- Product satisfaction analysis by uniting the top 2 more satisfied countries and the top 2 less satisfied countries.
+
 -- Flat table & Star Schema version (no joins needed)
 WITH (
   SELECT
@@ -9,9 +12,9 @@ WITH (
 
 SELECT *
 FROM sentByCountry
-ORDER BY sent DESC LIMIT 5
+ORDER BY sent DESC LIMIT 2
 UNION ALL (
   SELECT *
   FROM sentByCountry
-  ORDER BY sent ASC LIMIT 5
+  ORDER BY sent ASC LIMIT 2
 )

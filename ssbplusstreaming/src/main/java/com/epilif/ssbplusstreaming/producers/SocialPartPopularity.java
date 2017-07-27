@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class SocialPartPopularity extends TimerTask {
 
-    public static String[] countries = {"Portugal", "Spain", "U.K.", "USA", "China"};
+    public static String[] countries = {"Portugal", "Spain", "United Kingdom", "Germany", "Italy", "France"};
     public static String[] genders = {"Male", "Female"};
 
     private final String topic;
@@ -47,7 +47,7 @@ public class SocialPartPopularity extends TimerTask {
             int partkey = rand.nextInt(1800000) + 1;
             int datekey = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
             int timekey = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm")));
-            String country = countries[rand.nextInt(5)];
+            String country = countries[rand.nextInt(6)];
             String gender = genders[rand.nextInt(2)];
             int sentiment = rand.nextInt(6);
             ProducerRecord<String, String> data = new ProducerRecord<>(this.topic,

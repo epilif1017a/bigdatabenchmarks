@@ -1,3 +1,6 @@
+-- Query 6
+-- Understand the periods of the day in which Portuguese and Spanish Women tend to express more sentiments in social media towards our set of product categories.
+
 -- Flat table version
 SELECT
   CASE
@@ -9,7 +12,7 @@ SELECT
   p_category,
   COUNT(sentiment) as count
 FROM social_part_popularity
-WHERE country = 'Portugal' AND gender ='Female'
+WHERE (country = 'Portugal' OR country = 'Spain') AND gender ='Female'
 GROUP BY hour, p_category
 
 -- Star Schema version
@@ -25,5 +28,5 @@ SELECT
 FROM social_part_popularity AS spp
 JOIN part AS p ON spp.partkey = p.partkey
 JOIN time_dim AS t ON spp.partkey = t.timekey
-WHERE country = 'Portugal' AND gender ='Female'
+WHERE (country = 'Portugal' OR country = 'Spain') AND gender ='Female'
 GROUP BY hour, p_category

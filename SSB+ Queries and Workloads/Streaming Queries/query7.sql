@@ -1,3 +1,6 @@
+-- Query 7
+-- Analyze the product categories and gender whose average sentiment is higher than the average of the sentiments for all products in our company.
+
 -- Flat table version
 SELECT
   p_category,
