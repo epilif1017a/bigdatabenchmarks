@@ -13,8 +13,8 @@ import java.util.TimerTask;
 
 public class SocialPartPopularity extends TimerTask {
 
-    public static String[] countries = {"Portugal", "Spain", "United Kingdom", "Germany", "Italy", "France"};
-    public static String[] genders = {"Male", "Female"};
+    private static String[] countries = {"Portugal", "Spain", "United Kingdom", "Germany", "Italy", "France"};
+    private static String[] genders = {"Male", "Female"};
 
     private final String topic;
     private final KafkaProducer<String, String> producer;
@@ -46,7 +46,7 @@ public class SocialPartPopularity extends TimerTask {
         for (int i = 0; i < this.numRecords; i++) {
             int partkey = rand.nextInt(1800000) + 1;
             int datekey = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-            int timekey = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm")));
+            String timekey = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
             String country = countries[rand.nextInt(6)];
             String gender = genders[rand.nextInt(2)];
             int sentiment = rand.nextInt(5) + 1;
