@@ -58,7 +58,6 @@ public class SocialPartPopularity extends TimerTask {
                             gender + "\";\"" +
                             sentiment
             );
-            System.out.println(data.topic());
             this.producer.send(data, callback);
         }
     }

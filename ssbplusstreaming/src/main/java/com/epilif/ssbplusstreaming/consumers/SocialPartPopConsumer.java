@@ -30,7 +30,7 @@ public class SocialPartPopConsumer {
         kafkaParams.put("bootstrap.servers", "node5.dsi.uminho.pt:6667");
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
-        kafkaParams.put("group.id", "spark.consumers");
+        kafkaParams.put("group.id", "spark.events");
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
         kafkaParams.put("security.protocol", "SASL_PLAINTEXT");
@@ -53,8 +53,6 @@ public class SocialPartPopConsumer {
                 });
 
         Broadcast<JavaPairRDD<Integer, String>> broadcastedPartCats = jssc.sparkContext().broadcast(partCategories);
-
-        System.out.println(broadcastedPartCats.getValue().take(10));
 
         JavaInputDStream<ConsumerRecord<String, String>> stream = KafkaUtils.createDirectStream(
                 jssc,
@@ -96,8 +94,6 @@ public class SocialPartPopConsumer {
                                 tuple._2()._1().getGender(),
                                 tuple._2()._1().getSentiment()
                         )));
-
-        joinedStream.print(10);
 
         joinedStream.foreachRDD((JavaRDD<SocialPartPopFlatRow> rdd) -> {
             javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
