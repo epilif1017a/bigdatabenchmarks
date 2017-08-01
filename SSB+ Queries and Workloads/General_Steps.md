@@ -15,13 +15,20 @@ This script can be used to create the initial external tables to hold the .TBL f
 
 _Note:_ you will find an help if you run it only with --help
 
-**STEP 3) RUN upload_local_files_to_hadoop.sh (under DDL and DML folder)**
+**STEP 2) RUN create_cassandra_tables.sh (under DDL and DML folder)**
 
-This will transfer the .TBL and .CSV files from a local folder to the corresponding locations of the external tables in HDFS (created with previous script).
+This will create the databases and the tables in your cassandra to hold the streaming data.
+Currently only the cassandra script is available. However, feel free to adapt it to other shells (e.g., HBase shell).
+
+_Note:_ you will find an help if you run it only with --help
+
+**STEP 3) RUN gen_files_and_sendto_hadoop.sh (under DDL and DML folder)**
+
+This will run the dbgen to generate the SSB data and transfer the .TBL and .CSV files from a local folder to the corresponding locations of the external tables in HDFS (created with previous script).
 
 _Note:_ help available!
 
-STEP 4) RUN populate_ssbplus.sh (under DDL and DML folder)
+STEP 4) RUN move_from_ext_to_final_tables.sh (under DDL and DML folder)
 
 This script transfers the data from the Hive external tables to the Hive final tables (typically ORC or PARQUET tables, depending on the file format you choose in the create_hive_tables.sh script).
 It will also create a flat lineorder table, to compare star schemas vs. flat tables.

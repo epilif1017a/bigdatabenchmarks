@@ -49,13 +49,13 @@ public class SocialPartPopularity extends TimerTask {
             int timekey = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm")));
             String country = countries[rand.nextInt(6)];
             String gender = genders[rand.nextInt(2)];
-            int sentiment = rand.nextInt(6);
+            int sentiment = rand.nextInt(5) + 1;
             ProducerRecord<String, String> data = new ProducerRecord<>(this.topic,
-                    partkey + ";" +
-                            datekey + ";" +
-                            timekey + ";" +
-                            country + ";" +
-                            gender + ";" +
+                    partkey + "\";\"" +
+                            datekey + "\";\"" +
+                            timekey + "\";\"" +
+                            country + "\";\"" +
+                            gender + "\";\"" +
                             sentiment
             );
             System.out.println(data.topic());
@@ -68,8 +68,6 @@ public class SocialPartPopularity extends TimerTask {
         public void onCompletion(RecordMetadata recordMetadata, Exception e) {
             if (e != null) {
                 System.err.printf("Error while producing message to topic %s. Message: %s %n", recordMetadata.topic(), e.getMessage());
-            } else {
-                System.out.printf("Successfully send message to %s %n", recordMetadata.topic());
             }
         }
     }

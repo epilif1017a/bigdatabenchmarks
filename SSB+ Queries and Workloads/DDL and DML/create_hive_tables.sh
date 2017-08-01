@@ -10,7 +10,6 @@ location=""
 
 for arg in "$@"
 do
-
     key=$(echo ${arg} | cut -f 1 -d :)
     value=$(echo ${arg} | cut -f 2 -d :)
 
@@ -53,7 +52,7 @@ then
     CREATE $external TABLE date_dim (datekey int, datestandard varchar(10), \`date\` varchar(18), weeknuminyear int, monthnuminyear int,
     year int, daynuminmonth int, yearmonthnum int, yearmonth varchar(7)) $rowformat STORED AS $fileformat $location;
 
-    CREATE $external TABLE time_dim (timekey int, hour int, minutes int) $rowformat STORED AS $fileformat $location;
+    CREATE $external TABLE time_dim (timekey varchar(4), hour int, minutes int) $rowformat STORED AS $fileformat $location;
 
     CREATE $external TABLE lineorder (orderkey int, linenumber int, custkey int, partkey int, suppkey int, orderdate int,
     orderpriority varchar(15), shippriority varchar(1), quantity float, extendedprice float, ordertotalprice float,
@@ -70,7 +69,10 @@ then
             cd_year int, cd_daynuminmonth int, cd_yearmonthnum int, cd_yearmonth varchar(7), orderkey int, linenumber int, orderpriority varchar(15), shippriority varchar(1),
             quantity float, extendedprice float, ordertotalprice float, discount float, revenue float, supplycost float, tax float, shipmode varchar(10)) STORED AS $fileformat;
 
-            CREATE EXTERNAL TABLE social_part_popularity (partkey int, datekey int, timekey int, country varchar(30), gender varchar(10), sentiment int) STORED AS $fileformat;"
+            CREATE EXTERNAL TABLE social_part_popularity (partkey int, datekey int, timekey varchar(4), country varchar(30), gender varchar(10), sentiment int) STORED AS $fileformat;
+
+            CREATE EXTERNAL TABLE social_part_popularity_flat (partkey int, partcategory varchar(7), datekey int, hour int, minutes int, country varchar(30), gender varchar(10), sentiment int) STORED AS $fileformat;"
+
    fi
 
 else

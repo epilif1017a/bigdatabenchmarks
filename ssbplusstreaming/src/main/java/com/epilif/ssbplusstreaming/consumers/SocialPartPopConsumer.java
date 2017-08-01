@@ -1,18 +1,26 @@
 package com.epilif.ssbplusstreaming.consumers;
 
-import static com.datastax.spark.connector.japi.CassandraJavaUtil.javaFunctions;
-import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.spark.SparkConf;
-import org.apache.spark.streaming.api.java.*;
-import org.apache.spark.streaming.kafka010.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.streaming.Durations;
+import org.apache.spark.streaming.api.java.JavaDStream;
+import org.apache.spark.streaming.api.java.JavaInputDStream;
+import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import org.apache.spark.streaming.kafka010.*;
+import scala.Tuple2;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.javaFunctions;
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
 
 public class SocialPartPopConsumer {
 
@@ -22,12 +30,12 @@ public class SocialPartPopConsumer {
         kafkaParams.put("bootstrap.servers", "node5.dsi.uminho.pt:6667");
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
-        kafkaParams.put("group.id", "spark.events");
+        kafkaParams.put("group.id", "spark.consumers");
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
         kafkaParams.put("security.protocol", "SASL_PLAINTEXT");
 
-        Collection<String> topics = Arrays.asList("carlos");
+        Collection<String> topics = Arrays.asList("social_part_popularity");
         final AtomicReference<OffsetRange[]> offsetRanges = new AtomicReference<>();
 
         SparkConf conf = new SparkConf()
@@ -38,28 +46,61 @@ public class SocialPartPopConsumer {
 
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
 
-        JavaInputDStream<ConsumerRecord<Integer, String>> stream = KafkaUtils.createDirectStream(
+        JavaPairRDD<Integer, String> partCategories = jssc.sparkContext().textFile(args[0]).
+                mapToPair(s -> {
+                    String[] split = s.split("\\|");
+                    return new Tuple2(Integer.parseInt(split[0]), split[3]);
+                });
+
+        Broadcast<JavaPairRDD<Integer, String>> broadcastedPartCats = jssc.sparkContext().broadcast(partCategories);
+
+        System.out.println(broadcastedPartCats.getValue().take(10));
+
+        JavaInputDStream<ConsumerRecord<String, String>> stream = KafkaUtils.createDirectStream(
                 jssc,
                 LocationStrategies.PreferConsistent(),
                 ConsumerStrategies.Subscribe(topics, kafkaParams)
         );
 
-        stream.foreachRDD((JavaRDD<ConsumerRecord<Integer, String>> rdd) -> {
+        stream.foreachRDD((JavaRDD<ConsumerRecord<String, String>> rdd) -> {
             OffsetRange[] offsets = ((HasOffsetRanges) rdd.rdd()).offsetRanges();
             offsetRanges.set(offsets);
         });
 
-        JavaDStream<SocialPartPopRow> transformedStream = stream.map((ConsumerRecord<Integer, String> event) -> {
+        JavaDStream<SocialPartPopRow> transformedStream = stream.map((ConsumerRecord<String, String> event) -> {
             String[] fields = event.value().split("\";\"");
-            Matcher m = Pattern.compile("product=(.*)&redirected=(.*)").matcher(fields[1]);
-            m.find();
-            return new SocialPartPopRow(fields[0], m.group(1), Boolean.parseBoolean(m.group(2)));
+            return new SocialPartPopRow(
+                    Integer.parseInt(fields[0]),
+                    Integer.parseInt(fields[1]),
+                    fields[2],
+                    fields[3],
+                    fields[4],
+                    Integer.parseInt(fields[5])
+            );
         });
 
-        transformedStream.print();
-
         transformedStream.foreachRDD((JavaRDD<SocialPartPopRow> rdd) -> {
-            javaFunctions(rdd).writerBuilder("carlos", "dummy_sales", mapToRow(SocialPartPopRow.class)).saveToCassandra();
+            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity", mapToRow(SocialPartPopRow.class)).saveToCassandra();
+        });
+
+        JavaDStream<SocialPartPopFlatRow> joinedStream = transformedStream.transform((JavaRDD<SocialPartPopRow> rdd) ->
+                rdd.mapToPair(row -> new Tuple2<>(row.getPartkey(), row))
+                        .join(broadcastedPartCats.value())
+                        .map(tuple -> new SocialPartPopFlatRow(
+                                tuple._1(),
+                                tuple._2()._2(),
+                                tuple._2()._1().getDatekey(),
+                                Integer.parseInt(tuple._2()._1().getTimekey().substring(0, 2)),
+                                Integer.parseInt(tuple._2()._1().getTimekey().substring(2)),
+                                tuple._2()._1().getCountry(),
+                                tuple._2()._1().getGender(),
+                                tuple._2()._1().getSentiment()
+                        )));
+
+        joinedStream.print(10);
+
+        joinedStream.foreachRDD((JavaRDD<SocialPartPopFlatRow> rdd) -> {
+            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
             ((CanCommitOffsets) stream.inputDStream()).commitAsync(offsetRanges.get());
         });
 
@@ -67,6 +108,8 @@ public class SocialPartPopConsumer {
             jssc.start();
             jssc.awaitTermination();
         } catch (InterruptedException ex) {
+            broadcastedPartCats.unpersist();
+            broadcastedPartCats.destroy();
             System.err.printf("The application '%s' has stopped! ", conf.getAppId());
         }
     }

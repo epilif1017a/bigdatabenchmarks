@@ -9,7 +9,7 @@ then
 
         echo "...QUERY-1.1..."
         echo "...QUERY-1.1..." >> ${4}/ss_bcastjoins_results_facebookpresto${5}.txt
-        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "SET SESSION distributed_join=false; select sum(lo.extendedprice*lo.discount) as revenue from lineorder lo join date_dim d on lo.orderdate = d.datekey where d.year = 1993 and lo.discount between 1 and 3 and lo.quantity < 25;;"; } >> ${4}/ss_bcastjoins_results_facebookpresto${5}.txt 2>> ${4}/ss_bcastjoins_results_facebookpresto${5}.txt
+        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "SET SESSION distributed_join=false; select sum(lo.extendedprice*lo.discount) as revenue from lineorder lo join date_dim d on lo.orderdate = d.datekey where d.year = 1993 and lo.discount between 1 and 3 and lo.quantity < 25;"; } >> ${4}/ss_bcastjoins_results_facebookpresto${5}.txt 2>> ${4}/ss_bcastjoins_results_facebookpresto${5}.txt
 
         echo "...QUERY-1.2..."
         echo "...QUERY-1.2...">>${4}/ss_bcastjoins_results_facebookpresto${5}.txt

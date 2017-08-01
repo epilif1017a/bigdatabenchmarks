@@ -2,22 +2,26 @@ package com.epilif.ssbplusstreaming.consumers;
 
 import java.io.Serializable;
 
-public class SocialPartPopRow implements Serializable {
+public class SocialPartPopFlatRow implements Serializable {
 
     private int partkey;
+    private String partcategory;
     private int datekey;
-    private String timekey;
+    private int hour;
+    private int minutes;
     private String country;
     private String gender;
     private int sentiment;
 
-    public SocialPartPopRow() {
+    public SocialPartPopFlatRow() {
     }
 
-    public SocialPartPopRow(int partkey, int datekey, String timekey, String country, String gender, int sentiment) {
+    public SocialPartPopFlatRow(int partkey, String partcategory, int datekey, int hour, int minutes, String country, String gender, int sentiment) {
         this.partkey = partkey;
+        this.partcategory = partcategory;
         this.datekey = datekey;
-        this.timekey = timekey;
+        this.hour = hour;
+        this.minutes = minutes;
         this.country = country;
         this.gender = gender;
         this.sentiment = sentiment;
@@ -31,6 +35,12 @@ public class SocialPartPopRow implements Serializable {
         this.partkey = partkey;
     }
 
+    public String getPartcategory() { return partcategory; }
+
+    public void setPartcategory(String partcategory) {
+        this.partcategory = partcategory;
+    }
+
     public int getDatekey() {
         return datekey;
     }
@@ -39,12 +49,20 @@ public class SocialPartPopRow implements Serializable {
         this.datekey = datekey;
     }
 
-    public String getTimekey() {
-        return timekey;
+    public int getHour() {
+        return hour;
     }
 
-    public void setTimekey(String timekey) {
-        this.timekey = timekey;
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
     }
 
     public String getCountry() {

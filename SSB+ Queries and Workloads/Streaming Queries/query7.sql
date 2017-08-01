@@ -3,25 +3,25 @@
 
 -- Flat table version
 SELECT
-  p_category,
+  partcategory,
   gender,
   AVG(sentiment) sent
-FROM social_part_popularity
-GROUP BY p_category, gender
-HAVING sent > (
+FROM cassandra.ssbplus.social_part_popularity_flat
+GROUP BY partcategory, gender
+HAVING AVG(sentiment) > (
                 SELECT AVG(sentiment)
-                FROM social_part_popularity
-              )
+                FROM cassandra.ssbplus.social_part_popularity_flat
+              );
 
 -- Star Schema version
 SELECT
   p.category,
   gender,
   AVG(sentiment) sent
-FROM social_part_popularity AS spp
-JOIN part AS p ON spp.partkey = p.partkey
+FROM cassandra.ssbplus.social_part_popularity AS spp
+JOIN hive.ssb300.part AS p ON spp.partkey = p.partkey
 GROUP BY p.category, gender
-HAVING sent > (
+HAVING AVG(sentiment) > (
                 SELECT AVG(sentiment)
-                FROM social_part_popularity
-              )
+                FROM cassandra.ssbplus.social_part_popularity
+              );
