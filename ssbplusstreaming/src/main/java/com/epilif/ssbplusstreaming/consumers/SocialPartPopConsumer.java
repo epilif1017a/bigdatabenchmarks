@@ -42,9 +42,17 @@ public class SocialPartPopConsumer {
                 .setAppName("StreamingCPEWorkload")
                 .set("spark.cassandra.connection.host", "node2.dsi.uminho.pt,node11.dsi.uminho.pt")
                 .set("spark.cassandra.auth.username", "presto")
-                .set("spark.cassandra.auth.password", "prestoCassandra");
+                .set("spark.cassandra.auth.password", "prestoCassandra")
+                //.set("spark.cassandra.connection.timeout_ms", "20000")
+                .set("spark.cassandra.connection.connections_per_executor_max", "1")
+                //.set("spark.cassandra.connection.keep_alive_ms", "1000")
+                .set("spark.cassandra.output.batch.grouping.key", "replica_set")
+                .set("spark.cassandra.output.batch.size.rows", "50")
+                .set("spark.cassandra.output.concurrent.writes", "2");
 
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
+
+
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(20));
 
         JavaPairRDD<Integer, String> partCategories = jssc.sparkContext().textFile(args[0]).
                 mapToPair(s -> {
