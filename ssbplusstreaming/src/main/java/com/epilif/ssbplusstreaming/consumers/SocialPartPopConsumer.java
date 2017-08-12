@@ -5,7 +5,10 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
@@ -42,17 +45,16 @@ public class SocialPartPopConsumer {
                 .setAppName("StreamingCPEWorkload")
                 .set("spark.cassandra.connection.host", "node2.dsi.uminho.pt,node11.dsi.uminho.pt")
                 .set("spark.cassandra.auth.username", "presto")
-                .set("spark.cassandra.auth.password", "prestoCassandra")
-                //.set("spark.cassandra.connection.timeout_ms", "20000")
-                .set("spark.cassandra.connection.connections_per_executor_max", "1")
+                .set("spark.cassandra.auth.password", "prestoCassandra");
+                //.set("spark.cassandra.connection.connections_per_executor_max", "1")
                 //.set("spark.cassandra.connection.keep_alive_ms", "1000")
-                .set("spark.cassandra.output.batch.grouping.key", "replica_set")
-                .set("spark.cassandra.output.batch.size.rows", "50")
-                .set("spark.cassandra.output.concurrent.writes", "2");
+                //.set("spark.cassandra.output.batch.grouping.key", "replica_set")
+                //.set("spark.cassandra.output.batch.size.rows", "50")
+                //.set("spark.cassandra.output.concurrent.writes", "2");
 
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
 
-
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(20));
+        SparkSession spark = new SparkSession(JavaSparkContext.toSparkContext(jssc.sparkContext()));
 
         JavaPairRDD<Integer, String> partCategories = jssc.sparkContext().textFile(args[0]).
                 mapToPair(s -> {
@@ -86,7 +88,17 @@ public class SocialPartPopConsumer {
         });
 
         transformedStream.foreachRDD((JavaRDD<SocialPartPopRow> rdd) -> {
-            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity", mapToRow(SocialPartPopRow.class)).saveToCassandra();
+            //javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity", mapToRow(SocialPartPopRow.class)).saveToCassandra();
+            Dataset ds = spark.createDataFrame(rdd, SocialPartPopRow.class);
+            ds.select("partkey",
+                    "datekey",
+                    "timekey",
+                    "country",
+                    "gender",
+                    "sentiment")
+                    .write()
+                    .mode("append")
+                    .orc("/apps/hive/warehouse/ssbplus300.db/social_part_popularity");
         });
 
         JavaDStream<SocialPartPopFlatRow> joinedStream = transformedStream.transform((JavaRDD<SocialPartPopRow> rdd) ->
@@ -104,7 +116,19 @@ public class SocialPartPopConsumer {
                         )));
 
         joinedStream.foreachRDD((JavaRDD<SocialPartPopFlatRow> rdd) -> {
-            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
+            //javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
+            Dataset ds = spark.createDataFrame(rdd, SocialPartPopFlatRow.class);
+            ds.select("partkey",
+                    "partcategory",
+                    "datekey",
+                    "hour",
+                    "minutes",
+                    "country",
+                    "gender",
+                    "sentiment")
+                    .write()
+                    .mode("append")
+                    .orc("/apps/hive/warehouse/ssbplus300.db/social_part_popularity_flat");
             ((CanCommitOffsets) stream.inputDStream()).commitAsync(offsetRanges.get());
         });
 
