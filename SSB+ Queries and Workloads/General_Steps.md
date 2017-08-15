@@ -41,6 +41,3 @@ Currently, we have scripts for Hive and Presto (distributed and broadcast joins 
 
 **STEP 6)** For streaming scenarios, run create_cassandra_table.sh, Kafka producer, and Kafka consumer to start producing data and to store it in Cassandra and Hive. Use the available streaming queries to analyze the performance of your infrastructure, depending on the Kafka Producer throughput and producing rates.
 Currently, there is no autonomous way of doing it. Either use the Hive's or Presto's command line or any other interface to submit the queries. You can use any SQL-on-Hadoop engine of your choice, but be aware of the SQL compatibility level.   
-
-**STEP 7)** Finally, a set of queries combining both batch and streaming data simultaneously are also available.
-Again use any SQL-on-Hadoop engine and interface of your choice.
