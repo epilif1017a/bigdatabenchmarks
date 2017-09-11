@@ -88,7 +88,7 @@ public class SocialPartPopConsumer {
         });
 
         transformedStream.foreachRDD((JavaRDD<SocialPartPopRow> rdd) -> {
-            //javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity", mapToRow(SocialPartPopRow.class)).saveToCassandra();
+            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity", mapToRow(SocialPartPopRow.class)).saveToCassandra();
             Dataset ds = spark.createDataFrame(rdd, SocialPartPopRow.class);
             ds.select("partkey",
                     "datekey",
@@ -116,7 +116,7 @@ public class SocialPartPopConsumer {
                         )));
 
         joinedStream.foreachRDD((JavaRDD<SocialPartPopFlatRow> rdd) -> {
-            //javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
+            javaFunctions(rdd).writerBuilder("ssbplus", "social_part_popularity_flat", mapToRow(SocialPartPopFlatRow.class)).saveToCassandra();
             Dataset ds = spark.createDataFrame(rdd, SocialPartPopFlatRow.class);
             ds.select("partkey",
                     "partcategory",
