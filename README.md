@@ -42,7 +42,7 @@ This will run the dbgen to generate the SSB data and transfer the .TBL and .CSV 
 
 _Note:_ help available!
 
-STEP 4) RUN move_from_ext_to_final_tables.sh (under DDL and DML folder)
+**STEP 4) RUN move_from_ext_to_final_tables.sh (under DDL and DML folder)**
 
 This script transfers the data from the Hive external tables to the Hive final tables (typically ORC or PARQUET tables, depending on the file format you choose in the create_hive_tables.sh script).
 It will also create a flat lineorder table, to compare star schemas vs. flat tables.
