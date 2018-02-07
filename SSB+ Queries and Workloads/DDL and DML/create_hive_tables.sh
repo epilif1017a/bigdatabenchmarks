@@ -21,7 +21,7 @@ do
             rowformat)    rowformat=${value} ;;
             fileformat)    fileformat=${value} ;;
             location)    location=${value} ;;
-            -help) echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/testecarlos.db'\"
+            -help) echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
                         1) Only server and dbname are mandatory. Other variables are optional.
                         2) fileformat defaults to ORC and port defaults to 2181
                         3) all other parameters are left blank
@@ -36,27 +36,27 @@ then
     beeline -u "jdbc:hive2://$server:$port/$dbname;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "
     DROP DATABASE IF EXISTS $dbname CASCADE;
 
-    CREATE DATABASE $dbname;
+    CREATE DATABASE $dbname $location;
 
-    CREATE $external TABLE customer (custkey int, name varchar(25),
+    CREATE $external TABLE $dbname.customer (custkey int, name varchar(25),
     address varchar(25), city varchar(10), nation varchar(15),
-    region varchar(12), phone varchar(15), mktsegment varchar(10)) $rowformat STORED AS $fileformat $location;
+    region varchar(12), phone varchar(15), mktsegment varchar(10)) $rowformat STORED AS $fileformat;
 
-    CREATE $external TABLE supplier (suppkey int, name varchar(25),
+    CREATE $external TABLE $dbname.supplier (suppkey int, name varchar(25),
     address varchar(25), city varchar(10), nation varchar(15),
-    region varchar(12), phone varchar(15)) $rowformat STORED AS $fileformat $location;
+    region varchar(12), phone varchar(15)) $rowformat STORED AS $fileformat;
 
-    CREATE $external TABLE part (partkey int, name varchar(22), mfgr varchar(6), category varchar(7),
-    brand1 varchar(9), color varchar(11), type varchar(25), size int, container varchar(10)) $rowformat STORED AS $fileformat $location;
+    CREATE $external TABLE $dbname.part (partkey int, name varchar(22), mfgr varchar(6), category varchar(7),
+    brand1 varchar(9), color varchar(11), type varchar(25), size int, container varchar(10)) $rowformat STORED AS $fileformat;
 
-    CREATE $external TABLE date_dim (datekey int, datestandard varchar(10), \`date\` varchar(18), weeknuminyear int, monthnuminyear int,
-    year int, daynuminmonth int, yearmonthnum int, yearmonth varchar(7)) $rowformat STORED AS $fileformat $location;
+    CREATE $external TABLE $dbname.date_dim (datekey int, datestandard varchar(10), \`date\` varchar(18), weeknuminyear int, monthnuminyear int,
+    year int, daynuminmonth int, yearmonthnum int, yearmonth varchar(7)) $rowformat STORED AS $fileformat;
 
-    CREATE $external TABLE time_dim (timekey varchar(4), hour int, minutes int) $rowformat STORED AS $fileformat $location;
+    CREATE $external TABLE $dbname.time_dim (timekey varchar(4), hour int, minutes int) $rowformat STORED AS $fileformat;
 
-    CREATE $external TABLE lineorder (orderkey int, linenumber int, custkey int, partkey int, suppkey int, orderdate int,
+    CREATE $external TABLE $dbname.lineorder (orderkey int, linenumber int, custkey int, partkey int, suppkey int, orderdate int,
     orderpriority varchar(15), shippriority varchar(1), quantity float, extendedprice float, ordertotalprice float,
-    discount float, revenue float, supplycost float, tax float, commitdate int, shipmode varchar(10)) $rowformat STORED AS $fileformat $location;"
+    discount float, revenue float, supplycost float, tax float, commitdate int, shipmode varchar(10)) $rowformat STORED AS $fileformat;"
 
    if [ ! "$external" ]
    then
@@ -76,7 +76,7 @@ then
    fi
 
 else
-    echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/testecarlos.db'\"
+    echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
     1) Only server and dbname are mandatory. Other variables are optional.
     2) fileformat defaults to ORC and port defaults to 2181
     3) all other parameters are left blank
