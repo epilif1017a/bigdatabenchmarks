@@ -21,7 +21,7 @@ do
             rowformat)    rowformat=${value} ;;
             fileformat)    fileformat=${value} ;;
             location)    location=${value} ;;
-            -help) echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
+            -help) echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
                         1) Only server and dbname are mandatory. Other variables are optional.
                         2) fileformat defaults to ORC and port defaults to 2181
                         3) all other parameters are left blank
@@ -76,7 +76,7 @@ then
    fi
 
 else
-    echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '\u0059'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
+    echo "Example Usage: create_hive_tables.sh server:example.node.com port:2181 dbname:hivedb external:EXTERNAL rowformat:\"ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'\" fileformat:TEXTFILE location:\"LOCATION '/apps/hive/warehouse/example.db'\"
     1) Only server and dbname are mandatory. Other variables are optional.
     2) fileformat defaults to ORC and port defaults to 2181
     3) all other parameters are left blank

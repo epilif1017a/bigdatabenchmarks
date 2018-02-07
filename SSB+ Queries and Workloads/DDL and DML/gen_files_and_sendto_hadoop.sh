@@ -27,12 +27,12 @@ then
     ./dbgen -T l -s ${scalefactor}
 
     echo "Uploading SSB data to HDFS"
-    hdfs dfs -put -f ${dbgenpath}/customer.tbl ${hdfspath}/customer
-    hdfs dfs -put -f ${dbgenpath}/supplier.tbl ${hdfspath}/supplier
-    hdfs dfs -put -f ${dbgenpath}/part.tbl ${hdfspath}/part
-    hdfs dfs -put -f ${dbgenpath}/date_dim.csv ${hdfspath}/date_dim
-    hdfs dfs -put -f ${dbgenpath}/time_dim.csv ${hdfspath}/time_dim
-    hdfs dfs -put -f ${dbgenpath}/lineorder.tbl ${hdfspath}/lineorder
+    hdfs dfs -put -f ${dbgenpath}/customer.tbl ${hdfspath}/customer/
+    hdfs dfs -put -f ${dbgenpath}/supplier.tbl ${hdfspath}/supplier/
+    hdfs dfs -put -f ${dbgenpath}/part.tbl ${hdfspath}/part/
+    hdfs dfs -put -f ${dbgenpath}/date_dim.csv ${hdfspath}/date_dim/
+    hdfs dfs -put -f ${dbgenpath}/time_dim.csv ${hdfspath}/time_dim/
+    hdfs dfs -put -f ${dbgenpath}/lineorder.tbl ${hdfspath}/lineorder/
     echo "Finished. Have a nice trip in Hadoop :)"
 else
     echo "Example usage: gen_files_and_sendto_hadoop.sh scalefactor:100 dbgenpath:/mypath/ hdfspath:/apps/hive/warehouse/externaldb.db.
