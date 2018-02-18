@@ -37,6 +37,13 @@ then
                 JOIN  part p ON l.partkey = p.partkey
                 JOIN  date_dim od ON l.orderdate = od.datekey
                 JOIN  date_dim cd ON l.commitdate = cd.datekey; alter table flat_lineorder concatenate; analyze table flat_lineorder compute statistics; analyze table flat_lineorder compute statistics for columns;"
+    beeline -u "jdbc:hive2://$server:$port/$destinationdb;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "
+    create table orders STORED AS ORC as SELECT orderkey, min(custkey) as custkey, min(orderdate) as orderdate, min(orderpriority) as orderpriority, sum(quantity) as quantity, sum(revenue) as revenue, count(1) as numproducts FROM lineorder group by orderkey; alter table orders concatenate; analyze table orders compute statistics; analyze table orders compute statistics for columns;
+    "
+
+    beeline -u "jdbc:hive2://$server:$port/$destinationdb;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "
+    create table flat_orders STORED AS ORC as SELECT orderkey, c.custkey as c_custkey, c.name as c_name, c.address as c_address, c.city as c_city, c.nation as c_nation, c.region as c_region, c.phone as c_phone, c.mktsegment as c_mktsegment, od.datekey as od_datekey, od.datestandard as od_date, od.weeknuminyear as od_weeknuminyear, od.monthnuminyear as od_monthnuminyear, od.year as od_year, od.daynuminmonth as od_daynuminmonth, od.yearmonthnum as od_yearmonthnum, od.yearmonth as od_yearmonth, orderpriority, quantity, revenue, numproducts FROM orders o join customer c on o.custkey = c.custkey join date_dim od on o.orderdate = od.datekey; alter table flat_orders concatenate; analyze table flat_orders compute statistics; analyze table flat_orders compute statistics for columns;
+    "
 
 else
     echo "Example usage: move_from_ext_to_final_tables.sh server:server_name port:port_number externaldb:myexternaldb destinationdb:mydestdb"
