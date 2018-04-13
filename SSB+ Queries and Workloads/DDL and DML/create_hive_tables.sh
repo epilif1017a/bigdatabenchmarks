@@ -58,6 +58,8 @@ then
     orderpriority varchar(15), shippriority varchar(1), quantity float, extendedprice float, ordertotalprice float,
     discount float, revenue float, supplycost float, tax float, commitdate int, shipmode varchar(10)) $rowformat STORED AS $fileformat;"
 
+    # returns and flat_returns tables are directly created using CTAS semantics in move_drom_ext_to_final_tables.sh
+
    if [ ! "$external" ]
    then
        beeline -u "jdbc:hive2://$server:$port/$dbname;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "

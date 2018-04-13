@@ -2,10 +2,11 @@
 
 if [ "$#" -eq "5" ]
 then
+    echo "***** Benchmark *****">>${4}/flat_results_facebookpresto${5}.txt
     for i in 1 2 3 4
     do
         echo "***** RUN-$i *****"
-        echo "***** RUN-$i *****">${4}/flat_results_facebookpresto${5}.txt
+        echo "***** RUN-$i *****">>${4}/flat_results_facebookpresto${5}.txt
 
         echo "...QUERY-1.1..."
         echo "...QUERY-1.1..." >> ${4}/flat_results_facebookpresto${5}.txt
@@ -65,6 +66,6 @@ then
     done
 
 else
-    echo "Example usage: flat_hive_queries.sh server port databasename resultsfolderpath scalefactor.
+    echo "Example usage: flat_presto_queries.sh server port databasename resultsfolderpath scalefactor.
     This uses the zookeeper connection style for Hive."
 fi

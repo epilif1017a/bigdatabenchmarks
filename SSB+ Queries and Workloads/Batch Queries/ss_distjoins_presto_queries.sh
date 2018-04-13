@@ -2,10 +2,11 @@
 
 if [ "$#" -eq "5" ]
 then
+    echo "***** Benchmark *****">>${4}/ss_distjoins_results_facebookpresto${5}.txt
     for i in 1
     do
         echo "***** RUN-$i *****"
-        echo "***** RUN-$i *****">${4}/ss_distjoins_results_facebookpresto${5}.txt
+        echo "***** RUN-$i *****">>${4}/ss_distjoins_results_facebookpresto${5}.txt
 
         echo "...QUERY-1.1..."
         echo "...QUERY-1.1..." >> ${4}/ss_distjoins_results_facebookpresto${5}.txt
