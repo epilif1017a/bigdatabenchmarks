@@ -49,8 +49,8 @@ It will also create a flat lineorder table, to compare star schemas vs. flat tab
 
 _Note:_ help available!
 
-**STEP 5)** For batch scenarios (typical SSB queries on historical data) you can use any of our scripts.
-These scripts contain all 13 SSB queries, for the star schema and for the flat table.
+**STEP 5)** For batch scenarios (typical SSB queries on historical data +  drill accross and window queries) you can use any of our scripts.
+These scripts contain all 13 SSB queries (+ 4 new queries), for the star schema and for the flat table.
 Currently, we have scripts for Hive and Presto (distributed and broadcast joins for star schema) command lines.
 
 **STEP 6)** For streaming scenarios, run create_cassandra_table.sh, Kafka producer, and Kafka consumer to start producing data and to store it in Cassandra and Hive. Use the available streaming queries to analyze the performance of your infrastructure, depending on the Kafka Producer throughput and producing rates.

@@ -2,7 +2,7 @@
 
 if [ "$#" -eq "5" ]
 then
-    echo "***** Benchmark *****">>${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
+    echo "***** Benchmark *****">${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
     for i in 1 2 3 4
     do
         echo "***** RUN-$i *****"
