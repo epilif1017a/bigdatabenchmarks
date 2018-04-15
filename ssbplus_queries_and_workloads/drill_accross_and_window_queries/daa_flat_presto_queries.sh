@@ -14,7 +14,7 @@ then
 
         echo "...QUERY-9.1..."
         echo "...QUERY-9.1..." >> ${4}/daa_flat_results_facebookpresto${5}.txt
-        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "WITH returns_found AS (SELECT p_partkey as partkey, count(1) as count_returns FROM flat_returns r WHERE p_mfgr = 'MFGR#3' AND s_region = 'ASIA' AND c_region = 'AMERICA' GROUP BY p_partkey) SELECT p_name, p_category, count(1) as count FROM flat_lineorder l WHERE p_mfgr = 'MFGR#3' AND s_region = 'ASIA' AND c_region = 'AMERICA' AND EXISTS (SELECT partkey FROM returns_found rf WHERE l.p_partkey = rf.partkey AND count_returns <= 1) GROUP BY p_name, p_category HAVING AVG(extendedprice) > 1000;"; } >> ${4}/daa_flat_results_facebookpresto${5}.txt 2>> ${4}/daa_flat_results_facebookpresto${5}.txt
+        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "WITH returns_found AS (SELECT p_partkey as partkey, count(1) as count_returns FROM flat_returns r WHERE p_mfgr = 'MFGR#3' AND s_region = 'ASIA' AND c_region = 'AMERICA' GROUP BY p_partkey) SELECT p_name, p_category, count(1) as count FROM flat_lineorder l WHERE p_mfgr = 'MFGR#3' AND s_region = 'ASIA' AND c_region = 'AMERICA' AND EXISTS (SELECT partkey FROM returns_found rf WHERE l.p_partkey = rf.partkey AND count_returns > 1) GROUP BY p_name, p_category HAVING AVG(extendedprice) > 1000;"; } >> ${4}/daa_flat_results_facebookpresto${5}.txt 2>> ${4}/daa_flat_results_facebookpresto${5}.txt
 
         echo "...QUERY-9.2..."
         echo "...QUERY-9.2..." >> ${4}/daa_flat_results_facebookpresto${5}.txt

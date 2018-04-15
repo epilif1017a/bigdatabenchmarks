@@ -39,7 +39,7 @@ then
                 JOIN  date_dim cd ON l.commitdate = cd.datekey; alter table flat_lineorder concatenate; analyze table flat_lineorder compute statistics; analyze table flat_lineorder compute statistics for columns;"
     beeline -u "jdbc:hive2://$server:$port/$externaldb;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "
                 CREATE TABLE $destinationdb.returns STORED AS ORC AS
-                    SELECT orderkey, linenumber, custkey, partkey, suppkey, orderdate, DATE_FORMAT( DATE_ADD( FROM_UNIXTIME( UNIX_TIMESTAMP( CAST(orderdate AS STRING), 'yyyyMMdd' ) ), CAST(round(rand() * 15) AS INT) ), 'yyyyMMdd') as returndate, round(rand() * quantity, 1) as returnedquantity
+                    SELECT orderkey, linenumber, custkey, partkey, suppkey, orderdate, CAST( DATE_FORMAT( DATE_ADD( FROM_UNIXTIME( UNIX_TIMESTAMP( CAST(orderdate AS STRING), 'yyyyMMdd' ) ), CAST(round(rand() * 15) AS INT) ), 'yyyyMMdd') AS INT) as returndate, round(rand() * quantity, 1) as returnedquantity
                     FROM $destinationdb.lineorder
                     WHERE rand() > 0.75; alter table $destinationdb.returns concatenate; analyze table $destinationdb.returns compute statistics; analyze table $destinationdb.returns compute statistics for columns;"
     beeline -u "jdbc:hive2://$server:$port/$externaldb;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" -e "
