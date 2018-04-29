@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# teste git
 
 if [ "$#" -eq "5" ]
 then
