@@ -30,7 +30,7 @@ public class SocialPartPopConsumer {
     public static void main(String[] args) {
 
         Map<String, Object> kafkaParams = new HashMap<>();
-        kafkaParams.put("bootstrap.servers", "node5.dsi.uminho.pt:6667");
+        kafkaParams.put("bootstrap.servers", "your_broker_here:6667");
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
         kafkaParams.put("group.id", "spark.events");
@@ -44,8 +44,8 @@ public class SocialPartPopConsumer {
         SparkConf conf = new SparkConf()
                 .setAppName("StreamingCPEWorkload")
                 .set("spark.cassandra.connection.host", "node2.dsi.uminho.pt,node11.dsi.uminho.pt")
-                .set("spark.cassandra.auth.username", "presto")
-                .set("spark.cassandra.auth.password", "prestoCassandra");
+                .set("spark.cassandra.auth.username", "username")
+                .set("spark.cassandra.auth.password", "password");
                 //.set("spark.cassandra.connection.connections_per_executor_max", "1")
                 //.set("spark.cassandra.connection.keep_alive_ms", "1000")
                 //.set("spark.cassandra.output.batch.grouping.key", "replica_set")
