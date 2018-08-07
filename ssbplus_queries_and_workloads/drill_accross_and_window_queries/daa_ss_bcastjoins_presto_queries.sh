@@ -18,7 +18,7 @@ then
 
         echo "...QUERY-9.2..."
         echo "...QUERY-9.2..." >> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
-        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "SET SESSION distributed_join=false; WITH returns_found AS (SELECT r.partkey as partkey, count(1) as count_returns FROM returns r GROUP BY r.partkey) SELECT p.name, p.category, count(1) as count FROM lineorder l JOIN part p ON l.partkey = p.partkey JOIN customer c ON l.custkey = c.custkey JOIN supplier s ON l.suppkey = s.suppkey WHERE EXISTS (SELECT partkey FROM returns_found rf WHERE l.partkey = rf.partkey AND count_returns > 1) GROUP BY p.name, p.category HAVING AVG(extendedprice) > 1000 ORDER BY count DESC LIMIT 10;"; } >> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt 2>> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
+        { time facebookpresto --source "RUN-$i Q1.1" --server ${1}:${2} --catalog hive --schema ${3} --execute "SET SESSION distributed_join=false; WITH returns_found AS (SELECT r.partkey as partkey, count(1) as count_returns FROM returns r GROUP BY r.partkey) SELECT p.name, p.category, count(1) as count FROM lineorder l JOIN part p ON l.partkey = p.partkey WHERE EXISTS (SELECT partkey FROM returns_found rf WHERE l.partkey = rf.partkey AND count_returns > 1) GROUP BY p.name, p.category HAVING AVG(extendedprice) > 1000 ORDER BY count DESC LIMIT 10;"; } >> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt 2>> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
 
         echo "...QUERY-10..."
         echo "...QUERY-10..." >> ${4}/daa_ss_bcastjoins_results_facebookpresto${5}.txt
