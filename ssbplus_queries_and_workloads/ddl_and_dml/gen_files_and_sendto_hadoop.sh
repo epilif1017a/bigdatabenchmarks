@@ -9,7 +9,7 @@ do
             scalefactor)    scalefactor=${value} ;;
             dbgenpath)    dbgenpath=${value} ;;
             hdfspath)    hdfspath=${value} ;;
-            -help) echo "Example usage: gen_files_and_sendto_hadoop.sh scalefactor:100 dbgenpath:/mypath/ hdfspath:/apps/hive/warehouse/externaldb.db.
+            -help) echo "Example usage: gen_files_and_sendto_hadoop.sh scalefactor:100 dbgenpath:/mypath/ hdfspath:/apps/hive/warehouse/externaldb.db
                         WARNING: Do not place '/' at the end of the paths.
                         WARNING: Date and Time dimensions should also be placed in the same dbgen path. Remember that Time dimension does not exist in traditional SSB. Also remember that the Date dimension has been modified, in order to only include the fields used in the queries, instead of irrelevant fields in the traditional SSB. The schema is different and therefore the Date table created by our scripts is also different!!! You can use the ones provided in this repository." ;;
             *)
