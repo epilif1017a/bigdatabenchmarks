@@ -3,7 +3,7 @@
 if [ "$#" -eq "5" ]
 then
     echo "***** Benchmark *****">>${4}/ss_distjoins_results_facebookpresto${5}.txt
-    for i in 1
+    for i in 1 2 3 4
     do
         echo "***** RUN-$i *****"
         echo "***** RUN-$i *****">>${4}/ss_distjoins_results_facebookpresto${5}.txt
