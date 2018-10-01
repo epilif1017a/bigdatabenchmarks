@@ -9,8 +9,8 @@ then
         echo "***** RUN-$i *****">${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
 
 
-        echo "...QUERY-5-flat..."
-        echo "...QUERY-5-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-8-flat..."
+        echo "...QUERY-8-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-5-flat" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
             WITH sentByCountry AS (
               SELECT
@@ -34,8 +34,8 @@ then
         "; } >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt 2>> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
 
 
-        echo "...QUERY-5-star..."
-        echo "...QUERY-5-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-8-star..."
+        echo "...QUERY-8-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-5-star" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
             SET SESSION distributed_join=false;
             WITH sentByCountry AS (
@@ -59,8 +59,8 @@ then
             );
         "; } >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt 2>> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
 
-        echo "...QUERY-6-star..."
-        echo "...QUERY-6-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-9-star..."
+        echo "...QUERY-9-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-6-star" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
             SET SESSION distributed_join=false;
             SELECT
@@ -80,8 +80,8 @@ then
         "; } >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt 2>> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
 
 
-        echo "...QUERY-6-flat..."
-        echo "...QUERY-6-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-9-flat..."
+        echo "...QUERY-9-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-6-flat" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
         SELECT
           CASE
@@ -98,8 +98,8 @@ then
         "; } >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt 2>> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
 
 
-        echo "...QUERY-7-flat..."
-        echo "...QUERY-7-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-10-flat..."
+        echo "...QUERY-10-flat..." >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-7-flat" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
         SELECT
           partcategory,
@@ -114,8 +114,8 @@ then
         "; } >> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt 2>> ${5}/flat_streaming_results_presto${7}_$(date +%H:%M).txt
 
 
-        echo "...QUERY-7-star..."
-        echo "...QUERY-7-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
+        echo "...QUERY-10-star..."
+        echo "...QUERY-10-star..." >> ${5}/star_streaming_results_presto${7}_$(date +%H:%M).txt
         { time facebookpresto --source "RUN-$i QUERY-7-star" --server ${1}:${2} --catalog ${6} --schema ${3} --execute "
             SET SESSION distributed_join=false;
             SELECT
