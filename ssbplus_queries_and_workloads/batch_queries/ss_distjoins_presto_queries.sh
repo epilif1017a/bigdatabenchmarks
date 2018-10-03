@@ -66,6 +66,5 @@ then
     done
 
 else
-    echo "Example usage: ss_distjoins_presto_queries.sh server port databasename resultsfolderpath scalefactor.
-    This uses the zookeeper connection style for Hive."
+    echo "Example usage: ss_distjoins_presto_queries.sh server port databasename resultsfolderpath scalefactor."
 fi
