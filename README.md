@@ -19,7 +19,7 @@ Lemire's original SSB DBgen: https://github.com/lemire/StarSchemaBenchmark
 If needed, a forked version is available in my Github account: https://github.com/epilif1017a/StarSchemaBenchmark
 
 _Important:_ Remember, this SSB+ version of the benchmark uses a more streamlined date dimension, only containing the attributes that are needed in the 13 queries.
-https://github.com/epilif1017a/bigdatabenchmarks/tree/master/SSB%2B%20Queries%20and%20Workloads/DDL%20and%20DML/Modified%20Date%20and%20Time%20Dimensions
+https://github.com/epilif1017a/bigdatabenchmarks/blob/master/ssbplus_queries_and_workloads/ddl_and_dml/StarSchemaBenchmark/date_dim.csv
 
 **STEP 2) RUN create_hive_tables.sh (under DDL and DML folder)**
 
