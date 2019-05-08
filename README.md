@@ -1,5 +1,5 @@
 # Big Data Benchmarks
-Code and documents related to Big Data Benchmarks (e.g., SSB).
+Code and documents related to Big Data Benchmarks (currently only the SSB+: https://link.springer.com/chapter/10.1007/978-3-319-91563-0_28).
 This repository shares shell scripts, Kafka Producers, Spark Streaming Consumers, and many other
 artifacts that can be useful to evaluate Big Data systems. At the moment,
 we are only concerned with an extension of the SSB benchmark, in order
